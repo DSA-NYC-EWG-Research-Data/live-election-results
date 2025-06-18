@@ -1,11 +1,12 @@
 import time
 import logging
-from utils import *
+from utils import get_elections, get_per_ed_results
 import json
 import sys
 
 URL_TO_QUERY = "https://enr.boenyc.gov"
 POLL_INTERVAL_SECONDS = 60
+
 
 def setup_logger():
     logger = logging.getLogger()
@@ -17,7 +18,9 @@ def setup_logger():
     logger.addHandler(handler)
     return logger
 
+
 logger = setup_logger()
+
 
 def fetch_data():
     try:
@@ -38,11 +41,13 @@ def fetch_data():
             continue
     return True
 
+
 def main():
     assert POLL_INTERVAL_SECONDS >= 60, "We shouldn't pull from the BOE website more than once a minute."
     while True:
         fetch_data()
         time.sleep(POLL_INTERVAL_SECONDS)
-    
+
+
 if __name__ == "__main__":
     main()
