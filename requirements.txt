@@ -1,0 +1,6 @@
+beautifulsoup4==4.13.4
+geopandas==1.1.0
+numpy==2.3.0
+pandas==2.3.0
+Requests==2.32.4
+Shapely==2.1.1
