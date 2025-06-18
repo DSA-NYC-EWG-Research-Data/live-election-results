@@ -27,6 +27,7 @@ const Select = ({ sx, ...props }) => {
         m: [0],
         pl: '1px',
         width: '100%',
+        bg: 'transparent',
         '&:focus': {
           outline: 'none',
           borderColor: 'text',

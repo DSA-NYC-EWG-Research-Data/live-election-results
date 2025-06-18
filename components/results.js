@@ -23,7 +23,7 @@ const Results = ({ selected, scale }) => {
       )
     ) {
       totals = data.all.all.candidates
-      totalReporting = data.reporting
+      totalReporting = data.all.all.reporting
     } else {
       if (scale == 'Election district') {
         totals = data.election_districts[thisSelected].candidates
