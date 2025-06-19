@@ -11,8 +11,13 @@ const addShapes = (map, key, width) => {
     type: 'fill',
     source: key,
     paint: {
-      'fill-color': ['coalesce', ['feature-state', 'color'], '#cccccc'],
       'fill-opacity': ['coalesce', ['feature-state', 'opacity'], 0],
+      'fill-color': [
+        'case',
+        ['boolean', ['feature-state', 'usePattern'], false],
+        '#00000000',
+        ['coalesce', ['feature-state', 'color'], '#cccccc']
+      ],
     },
     layout: {
       visibility: 'visible',

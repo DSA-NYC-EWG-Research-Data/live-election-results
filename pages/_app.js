@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }) {
   return (
     <ThemeUIProvider theme={theme}>
       <Head>
-        <title>Turf zones | Zohran for NYC</title>
+        <title>Live election tracker | NYC DSA</title>
       </Head>
       <Component {...pageProps} />
     </ThemeUIProvider>

@@ -1,14 +1,19 @@
 import { Box } from 'theme-ui'
 import { Row, Column } from './'
-import { candidateColors, scaleLookup } from './constants'
+import { candidateColors, scaleLookup, raceLookup } from './constants'
 import { formatPercent, formatDate } from './utils'
 import { color } from 'd3-color'
 import load from './load'
 
-const Results = ({ selected, scale }) => {
-  const { data, error } = load()
+const Results = ({ selected, setSelectedCandidate, scale, race }) => {
+  const { data, error } = load(
+    '/results/Mayoral (FAKE DATA).json',
+    '/results/City Council 38 (FAKE DATA).json',
+  )
 
-  if (!data) {
+  const thisData = data[raceLookup[race]]
+
+  if (!thisData) {
     return <></>
   } else {
     let totals = {}
@@ -18,21 +23,20 @@ const Results = ({ selected, scale }) => {
     if (
       !thisSelected ||
       !(
-        data.election_districts[thisSelected] ||
-        data.assembly_districts[thisSelected]
+        thisData.election_districts[thisSelected] ||
+        thisData.assembly_districts[thisSelected]
       )
     ) {
-      totals = data.all.all.candidates
-      totalReporting = data.all.all.reporting
+      totals = thisData.all.all.candidates
+      totalReporting = thisData.all.all.reporting
     } else {
       if (scale == 'Election district') {
-        totals = data.election_districts[thisSelected].candidates
-        totalReporting = data.election_districts[thisSelected].reporting
+        totals = thisData.election_districts[thisSelected].candidates
+        totalReporting = thisData.election_districts[thisSelected].reporting
       }
       if (scale == 'Assembly district') {
-        console.log('hi')
-        totals = data.assembly_districts[thisSelected].candidates
-        totalReporting = data.assembly_districts[thisSelected].reporting
+        totals = thisData.assembly_districts[thisSelected].candidates
+        totalReporting = thisData.assembly_districts[thisSelected].reporting
       }
     }
 
@@ -47,19 +51,26 @@ const Results = ({ selected, scale }) => {
               fontSize: [3, 3, 3, 3],
               fontFamily: 'heading',
               letterSpacing: 'heading',
-              textTransform: 'uppercase',
               display: 'flex',
             }}
           >
-            <Box>Election Results</Box>
+            <Box sx={{ textTransform: 'uppercase' }}>Early Results</Box>
             {thisSelected &&
               (scale == 'Election district'
-                ? data.election_districts[thisSelected]
-                : data.assembly_districts[thisSelected]) && (
+                ? thisData.election_districts[thisSelected]
+                : thisData.assembly_districts[thisSelected]) && (
                 <Box sx={{ ml: 'auto' }}>
-                  {thisSelected.slice(0, 2)}-{thisSelected.slice(2, 5)}
+                  {scale == 'Assembly district'
+                    ? `AD ${thisSelected}`
+                    : `${thisSelected.slice(0, 2)}-${thisSelected.slice(2, 5)}`}
                 </Box>
               )}
+            {!(
+              thisSelected &&
+              (scale == 'Election district'
+                ? thisData.election_districts[thisSelected]
+                : thisData.assembly_districts[thisSelected])
+            ) && <Box sx={{ ml: 'auto', textTransform: 'intial' }}>Total</Box>}
           </Box>
           <Box sx={{ mt: [3] }}>
             {sortedTotals.map((k, v) => {
@@ -93,7 +104,9 @@ const Results = ({ selected, scale }) => {
                         sx={{
                           zIndex: 2,
                           fontSize: [3, 3, 3, 3],
+                          cursor: 'pointer'
                         }}
+                        onClick={() => setSelectedCandidate(k[0])}
                       >
                         {k[0]}
                       </Box>
@@ -131,7 +144,7 @@ const Results = ({ selected, scale }) => {
               {formatPercent(totalReporting)} REPORTING
             </Box>
             <Box sx={{ fontFamily: 'mono', fontSize: [1, 1, 1, 1] }}>
-              LAST UPDATED {formatDate(data.last_updated)}
+              LAST UPDATED {formatDate(thisData.last_updated)}
             </Box>
           </Box>
         </Box>

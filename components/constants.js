@@ -26,7 +26,31 @@ export const candidateColors = {
   'Jessica Ramos': '#f9c295',
   'Scott Stringer': '#cc6633',
   'Whitney Tilson': '#b2df8a',
+  'Alexa Avilés': 'rgb(199,72,82)',
+  'Ling Ye': 'rgb(58,59,115)',
   'Write In': '#a5a5a5',
+}
+
+export const candidates = {
+  Mayoral: [
+    'Adrienne Adams',
+    'Selma Bartholomew',
+    'Michael Blake',
+    'Andrew Cuomo',
+    'Brad Lander',
+    'Zohran Kwame Mamdani',
+    'Zellnor Myrie',
+    'Paperboy Prince',
+    'Jessica Ramos',
+    'Scott Stringer',
+    'Whitney Tilson',
+  ],
+  'City Council 38': ['Alexa Avilés', 'Ling Ye'],
+}
+
+export const raceLookup = {
+  Mayoral: 'mayoral',
+  'City Council 38': 'council',
 }
 
 export const mapStyles = {
