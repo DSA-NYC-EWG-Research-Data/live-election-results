@@ -4,8 +4,14 @@ from utils import get_elections, get_per_ed_results
 import json
 import sys
 
-URL_TO_QUERY = "https://enr.boenyc.gov"
+PRODUCTION_MODE = False
+URL_TO_QUERY_PROD = "https://enr.boenyc.gov"
+URL_TO_QUERY_TEST = "https://web.archive.org/web/20210623061537/https://web.enrboenyc.us/index.html"
 POLL_INTERVAL_SECONDS = 60
+URL_TO_QUERY = URL_TO_QUERY_PROD if PRODUCTION_MODE else URL_TO_QUERY_TEST
+CONTEST_FILTER = ["mayor", "city council"]  # Makes scraper only look at races containing these terms. Leave empty list if you don't want to filter.
+PARTY_FILTER = ["democratic"]  # Makes scraper only look at listed party primaries. Leave empty list if you don't want to filter.
+CITY_COUNCIL_DISTRICTS = [38]
 
 
 def setup_logger():
@@ -19,25 +25,26 @@ def setup_logger():
     return logger
 
 
-logger = setup_logger()
+LOGGER = setup_logger()
 
 
 def fetch_data():
+    LOGGER.info("Fetching data.")
     try:
-        elections_dict = get_elections(URL_TO_QUERY)
-        logger.info(f"Success. elections_dict:\n{json.dumps(elections_dict, indent=4)}")
+        elections_dict = get_elections(URL_TO_QUERY, LOGGER, CONTEST_FILTER, PARTY_FILTER)
+        LOGGER.info(f"Success. elections_dict:\n{json.dumps(elections_dict, indent=4)}")
     except Exception as e:
-        logger.error(f"Error fetching data on get_elections({URL_TO_QUERY}):\n{e}")
+        LOGGER.error(f"Error fetching data on get_elections({URL_TO_QUERY}):\n{e}")
         return False
     for election, link in elections_dict.items():
         try:
-            results_dict = get_per_ed_results(link)
+            results_dict = get_per_ed_results(link, LOGGER)
             fname = f"data/cache/{election}.json"
             with open(fname, "w") as f:
                 json.dump(results_dict, f, indent=4)
-            logger.info(f"Sucess. Stored data in: {fname}")
+            LOGGER.info(f"Success. Stored data in: {fname}")
         except Exception as e: 
-            logger.error(f"Error fetching data on get_per_ed_results({link}):\n{e}")
+            LOGGER.error(f"Error fetching data on get_per_ed_results({link}):\n{e}")
             continue
     return True
 
