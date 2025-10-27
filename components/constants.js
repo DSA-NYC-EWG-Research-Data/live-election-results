@@ -15,37 +15,29 @@ export const boroughColorsDarker = {
 }
 
 export const candidateColors = {
-  'Adrienne Adams': '#8f49b7',
-  'Selma Bartholomew': '#a6cee3',
-  'Michael Blake': '#fc9a98',
+  'Eric L Adams': '#8f49b7',
   'Andrew Cuomo': '#1660a8',
-  'Brad Lander': '#ef4b30',
+  'Irene Estrada': '#a6cee3',
+  'Joseph Hernandez': '#6bb23d',
   'Zohran Kwame Mamdani': '#ffab00',
-  'Zellnor Myrie': '#6bb23d',
-  'Paperboy Prince': '#cab2d5',
-  'Jessica Ramos': '#f9c295',
-  'Scott Stringer': '#cc6633',
-  'Whitney Tilson': '#b2df8a',
+  'Curtis Sliwa': '#ef4b30',
+  'Jim Walden': '#fc9a98',
   'Alexa Avilés': 'rgb(199,72,82)',
-  'Ling Ye': 'rgb(58,59,115)',
+  'Republican Candidate': '#cc6633',
   'Write In': '#a5a5a5',
 }
 
 export const candidates = {
   Mayoral: [
-    'Adrienne Adams',
-    'Selma Bartholomew',
-    'Michael Blake',
+    'Eric L Adams',
     'Andrew Cuomo',
-    'Brad Lander',
+    'Irene Estrada',
+    'Joseph Hernandez',
     'Zohran Kwame Mamdani',
-    'Zellnor Myrie',
-    'Paperboy Prince',
-    'Jessica Ramos',
-    'Scott Stringer',
-    'Whitney Tilson',
+    'Curtis Sliwa',
+    'Jim Walden',
   ],
-  'City Council 38': ['Alexa Avilés', 'Ling Ye'],
+  'City Council 38': ['Alexa Avilés', 'Republican Candidate'],
 }
 
 export const raceLookup = {
