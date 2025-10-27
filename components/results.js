@@ -76,7 +76,7 @@ const Results = ({ selected, setSelectedCandidate, scale, race }) => {
               mb: [2],
             }}
           >
-            <Box sx={{ textTransform: 'uppercase' }}>1st Round Results</Box>
+            <Box sx={{ textTransform: 'uppercase' }}>General Election Results</Box>
             {thisSelected &&
               (scale == 'Election district'
                 ? thisData.election_districts[thisSelected]
