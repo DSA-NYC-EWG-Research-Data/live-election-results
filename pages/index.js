@@ -324,7 +324,7 @@ const Index = () => {
                 transform: 'translate(-50%, -50%)',
               }}
             >
-              Sorry, we're currently experiencing technical difficulties
+              Check in soon for results.
             </Box>
           </Box>
         </Box>
