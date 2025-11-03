@@ -6,3 +6,4 @@ __pycache__
 csv_data/
 public/results/
 .env.local
+data/cache

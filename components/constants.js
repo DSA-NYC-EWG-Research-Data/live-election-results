@@ -15,37 +15,29 @@ export const boroughColorsDarker = {
 }
 
 export const candidateColors = {
-  'Adrienne Adams': '#8f49b7',
-  'Selma Bartholomew': '#a6cee3',
-  'Michael Blake': '#fc9a98',
-  'Andrew Cuomo': '#1660a8',
-  'Brad Lander': '#ef4b30',
+  'Eric L. Adams': '#8f49b7',
+  'Irene Estrada': '#a6cee3',
+  'Joseph Hernandez': '#fc9a98',
+  'Andrew M. Cuomo': '#1660a8',
+  'Curtis A. Sliwa': '#ef4b30',
   'Zohran Kwame Mamdani': '#ffab00',
-  'Zellnor Myrie': '#6bb23d',
-  'Paperboy Prince': '#cab2d5',
-  'Jessica Ramos': '#f9c295',
-  'Scott Stringer': '#cc6633',
-  'Whitney Tilson': '#b2df8a',
+  'Jim Walden': '#6bb23d',
   'Alexa Avilés': 'rgb(199,72,82)',
-  'Ling Ye': 'rgb(58,59,115)',
-  'Write In': '#a5a5a5',
+  'Luis E. Quero': 'rgb(58,59,115)',
+  'WRITE-IN': '#a5a5a5',
 }
 
 export const candidates = {
   Mayoral: [
-    'Adrienne Adams',
-    'Selma Bartholomew',
-    'Michael Blake',
-    'Andrew Cuomo',
-    'Brad Lander',
+    'Eric L. Adams',
+    'Curtis A. Sliwa',
+    'Andrew M. Cuomo',
+    'Irene Estrada',
+    'Joseph Hernandez',
     'Zohran Kwame Mamdani',
-    'Zellnor Myrie',
-    'Paperboy Prince',
-    'Jessica Ramos',
-    'Scott Stringer',
-    'Whitney Tilson',
+    'Jim Walden',
   ],
-  'City Council 38': ['Alexa Avilés', 'Ling Ye'],
+  'City Council 38': ['Alexa Avilés', 'Luis E. Quero'],
 }
 
 export const raceLookup = {
