@@ -401,11 +401,11 @@ const Index = () => {
       <Box
         sx={{
           position: 'absolute',
-          bottom: [6],
-          right: 0,
+          bottom: [2, 5, 5, 5],
+          left: 5,
           zIndex: 1000,
           borderRadius: 2,
-          display: ['none', 'initial', 'intial', 'initial'],
+          display: ['none', 'none', 'initial', 'initial'],
         }}
       >
         <Link href='https://socialists.nyc/'>
@@ -419,12 +419,24 @@ const Index = () => {
         sx={{
           position: 'absolute',
           bottom: ['28px', 6, 6, 6],
-          left: ['initial', 0, 0, 0],
-          right: [4, 'initial', 'initial', 'initial'],
+          left: ['initial', 3, 'initial', 'initial'],
+          right: [4, 'initial', 3, 3],
           zIndex: 1000,
           borderRadius: 2,
         }}
       >
+        <Image
+            src='/logos/qrcode_socialists.nyc.png'
+            sx={{
+              display: 'block',
+              mx: 'auto',
+              mt: 2,
+              mb: 2,
+              ml: [2, 5, 5, 5],
+              width: ['150px', '150px'],
+              display: ['none', 'none', 'block', 'block'],
+            }}
+          />
         <Link
           href='https://socialists.nyc/join?source=results'
           sx={{
