@@ -35,6 +35,11 @@ TRANSLATION_DICT["Mayor"] = {
     "WRITE-IN": "WRITE-IN"
 }
 
+AD_WHITELIST_DICT = {
+    "Mayor": None,
+    "Member of the City Council 38th Council District": ["61", "51", "49"],
+}
+
 def setup_logger():
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
@@ -47,24 +52,33 @@ def setup_logger():
 
 logger = setup_logger()
 
-def gen_dummy_data():
-    elect_dists = json.load(open("data/shapes/districts.json", "r")).keys()
-    return pd.DataFrame(
-        {
-            "ElectDist": elect_dists,
-            "Reported %": np.random.rand(len(elect_dists)),
-            "Nicola (Democratic)": np.round(np.random.rand(len(elect_dists)) * 100),
-            "Jeremy (Democratic)": np.round(np.random.rand(len(elect_dists)) * 80),
-            "Chris (Republican >:) )": np.round(np.random.rand(len(elect_dists)) * 60),
-            "WRITE-IN": np.round(np.random.rand(len(elect_dists)) * 5),
-        }
-    ).assign(
-        AD=lambda df: df.ElectDist.str[:2].astype(int),
-        ED=lambda df: df.ElectDist.str[2:].astype(int),
-    )
+def fetch_data(args) -> dict:
+    try:
+        if args.scrape_all_elections:
+            whitelist = None
+        else: 
+            whitelist = BOE_ELECTION_WHITELIST
+        elections_dict = get_elections(args.url, whitelist=whitelist)
+        logger.info(f"Success. elections_dict:\n{json.dumps(elections_dict, indent=4)}")
+    except Exception as e:
+        logger.error(f"Error fetching data on get_elections({args.url}):\n{e}")
+        return {}
+    output = {}
+    for election, link in elections_dict.items():
+        try:
+            results_df = get_election_results(election, link, format="df", candidate_rename_dict=TRANSLATION_DICT)
+            if args.local_csv:
+                results_df.to_csv(f"csv_data/{election}.csv")
+            results_dict = get_grouped_dict(results_df)
+            results_dict["last_updated"] = str(pd.Timestamp.now())
+            output[election] = results_dict
+            logger.info(f"Sucess. Got data for {election}")
+        except Exception as e:
+            logger.error(f"Error fetching data on get_election_results({link}):\n{e}")
+            continue
+    return output
 
-
-def fetch_data(args):
+def upload_data(data, args): 
     if args.output.startswith("s3:"):
         # s3 output
         bucket = args.output[3:]
@@ -93,37 +107,13 @@ def fetch_data(args):
             with open(fname, "w") as f:
                 json.dump(data, f, indent=4)
             return fname
-
-    try:
-        if args.scrape_all_elections:
-            whitelist = None
+    for election in TRANSLATION_DICT.keys(): 
+        if election in data: 
+            election_output = data[election]
         else: 
-            whitelist = BOE_ELECTION_WHITELIST
-        elections_dict = get_elections(args.url, whitelist=whitelist)
-        logger.info(f"Success. elections_dict:\n{json.dumps(elections_dict, indent=4)}")
-    except Exception as e:
-        logger.error(f"Error fetching data on get_elections({args.url}):\n{e}")
-        return False
-    for election, link in elections_dict.items():
-        try:
-            if args.dummy_data:
-                results_df = gen_dummy_data()
-                election += " (FAKE DATA)"
-            else:
-                results_df = get_election_results(election, link, format="df", candidate_rename_dict=TRANSLATION_DICT)
-            if args.local_csv:
-                results_df.to_csv(f"csv_data/{election}.csv")
-            results_dict = get_grouped_dict(results_df)
-            results_dict["last_updated"] = str(pd.Timestamp.now())
-
-            fname = write_output(results_dict, election)
-            logger.info(f"Sucess. Stored data in: {fname}")
-        except Exception as e:
-            logger.error(f"Error fetching data on get_election_results({link}):\n{e}")
-            continue
-    return True
-
-
+            election_output = generate_blank_data("data/shapes/districts.json", TRANSLATION_DICT[election].values())
+            election_output["last_updated"] = str(pd.Timestamp.now())
+        write_output(election_output, election + " (EMPTY DATA)")
 def main():
     parser = argparse.ArgumentParser(
         prog="boe_scraper",
@@ -145,11 +135,6 @@ def main():
         default="public",
     )
     parser.add_argument(
-        "--dummy-data",
-        action='store_true',
-        help="Whether to use dummy data instead of actually pulling from the website. Useful for testing.",
-    )
-    parser.add_argument(
         "--local-csv",
         action='store_true',
         help="Whether to also store a csv locally. (Useful if you want to upload things to drive.)"
@@ -166,7 +151,7 @@ def main():
         args.poll_interval >= 60
     ), "We shouldn't pull from the BOE website more than once a minute."
     while True:
-        fetch_data(args)
+        upload_data(fetch_data(args), args)
         time.sleep(args.poll_interval)
 
 

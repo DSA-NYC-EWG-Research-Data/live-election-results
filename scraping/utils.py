@@ -4,6 +4,7 @@ from urllib.parse import urljoin
 import pandas as pd
 from io import StringIO
 import numpy as np
+import json
 import random
 import time
 
@@ -326,3 +327,24 @@ def get_nested_dict(
             output["candidates"][cand] += child_dict["candidates"][cand]
     output["reporting"] = sum_reporting_percs / output["approx_total_voters"]
     return output
+
+def generate_blank_data(elect_dist_geojson_fn: str, candidate_names: list[str], ad_whitelist: list[str] | None = None):
+    """This returns empty data in a grouped dict format."""
+    elect_dists = json.load(open(elect_dist_geojson_fn, "r")).keys()
+    if ad_whitelist: 
+        elect_dists = [elect_dist for elect_dist in elect_dists if elect_dist[:2] in ad_whitelist]
+
+    return get_grouped_dict(
+        pd.DataFrame(
+            {
+                "ElectDist": elect_dists,
+                "Reported %": 0,
+            } |
+            {
+                cand_name: 0 for cand_name in candidate_names
+            }
+        ).assign(
+            AD=lambda df: df.ElectDist.str[:2].astype(int),
+            ED=lambda df: df.ElectDist.str[2:].astype(int),
+        )
+    )
