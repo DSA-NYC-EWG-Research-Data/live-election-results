@@ -95,7 +95,7 @@ def get_elections(url: str, whitelist=None):
     """Given the root url, ie https://enr.boenyc.gov, output a dict, from election name to per_ad link, ie:
     {"State Senator": "https://enr.boenyc.gov/CD27280AD0.html", ...}
 
-    The values returned are able to be passed directly in get_per_ed_results below.
+    The values returned are able to be passed directly in get_election_results below.
 
     TODO @chrispan-68: some sub-pages don't follow the format, ie: https://web.archive.org/web/20210625211942/https://web.enrboenyc.us/OF18AD0PY1.html
 
@@ -175,7 +175,7 @@ def get_election_results(election_name: str, per_ad_url: str, format="grouped", 
                 axis=1, how="all"
             ).replace("-", 0.0)
             columns = ["ED", "Reported %"] + list(
-                subpage_df.iloc[0][2:] + " " + subpage_df.iloc[1][2:]
+                subpage_df.iloc[0][2:] + " " + subpage_df.iloc[1][2:].fillna("")
             )
             subpage_df = (
                 subpage_df.iloc[2:-1]
@@ -252,13 +252,9 @@ def get_grouped_dict(df, ad_min_votes_cutoff=5):
                 group_res["reporting"] = 0
             else:
                 group_res["approx_total_voters"] = float(total_voters.sum())
-                if np.average(
+                assert np.average(
                         gdf["Reported %"], weights=total_voters
-                ) == 0: 
-                    print(gdf["Reported %"])
-                    print(total_voters)
-                    assert 1 == 0
-
+                ) > 0, f"{gdf["Reported %"]}\n\n\n{total_voters}"
 
                 group_res["reporting"] = float(
                     np.average(

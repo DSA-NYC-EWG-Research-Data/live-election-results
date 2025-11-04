@@ -22,8 +22,8 @@ export const candidateColors = {
   'Curtis A. Sliwa': '#ef4b30',
   'Zohran Kwame Mamdani': '#ffab00',
   'Jim Walden': '#6bb23d',
-  'Alexa Avilés': 'rgb(199,72,82)',
-  'Luis E. Quero': 'rgb(58,59,115)',
+  'Alexa Avilés': 'rgba(50, 3, 190, 1)',
+  'Luis E. Quero': 'rgba(155, 16, 30, 1)',
   'WRITE-IN': '#a5a5a5',
 }
 

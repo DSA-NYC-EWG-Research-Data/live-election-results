@@ -124,7 +124,7 @@ def fetch_data(args):
             fname = write_output(results_dict, election)
             logger.info(f"Sucess. Stored data in: {fname}")
         except Exception as e:
-            logger.error(f"Error fetching data on get_per_ed_results({link}):\n{e}")
+            logger.error(f"Error fetching data on get_election_results({link}):\n{e}")
             continue
     return True
 
