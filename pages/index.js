@@ -426,7 +426,7 @@ const Index = () => {
         }}
       >
         <Image
-            src='/logos/qrcode_socialists.nyc.png'
+            src='/logos/nycdsa-qr-code.jpeg'
             sx={{
               display: 'block',
               mx: 'auto',
