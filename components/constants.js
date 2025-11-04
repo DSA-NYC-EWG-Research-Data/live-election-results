@@ -29,13 +29,13 @@ export const candidateColors = {
 
 export const candidates = {
   Mayoral: [
-    'Eric L. Adams',
-    'Curtis A. Sliwa',
-    'Andrew M. Cuomo',
-    'Irene Estrada',
-    'Joseph Hernandez',
-    'Zohran Kwame Mamdani',
-    'Jim Walden',
+    'Andrew M. Cuomo', 
+    'Curtis A. Sliwa', 
+    'Eric L. Adams', 
+    'Irene Estrada', 
+    'Jim Walden', 
+    'Joseph Hernandez', 
+    'Zohran Kwame Mamdani'
   ],
   'City Council 38': ['Alexa Avilés', 'Luis E. Quero'],
 }

@@ -433,7 +433,7 @@ const Index = () => {
               mt: 2,
               mb: 2,
               ml: [2, 5, 5, 5],
-              width: ['150px', '150px'],
+              width: ['155px', '155px'],
               display: ['none', 'none', 'block', 'block'],
             }}
           />
