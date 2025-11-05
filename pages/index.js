@@ -181,7 +181,7 @@ const Index = () => {
               const leadingCandidate = getMaxKey(districtResults.candidates)
               if (leadingCandidate) {
                 color = candidateColors[leadingCandidate] || '#cccccc'
-                opacity = districtResults.reporting > 0 ? 1 : 0 // Scale opacity based on reporting
+                opacity = 1 // Scale opacity based on reporting
               }
             } else if (
               districtResults.candidates[selectedCandidate] !== undefined
@@ -238,7 +238,7 @@ const Index = () => {
               const leadingCandidate = getMaxKey(districtResults.candidates)
               if (leadingCandidate) {
                 color = candidateColors[leadingCandidate] || '#cccccc'
-                opacity = districtResults.reporting > 0 ? 1 : 0 // Scale opacity based on reporting
+                opacity = 1 // Scale opacity based on reporting
               }
             } else if (
               districtResults.candidates[selectedCandidate] !== undefined
