@@ -20,18 +20,22 @@ BOE_ELECTION_WHITELIST = [
 # candidate name formatting.
 TRANSLATION_DICT = {}
 TRANSLATION_DICT["Member of the City Council 38th Council District"] = {
-    "Alexa Aviles": "Alexa Avilés",
-    "Luis E. Quero": "Luis E. Quero",
+    "Alexa Aviles (Working Families)": "Alexa Avilés",
+    "Alexa Aviles (Democratic)": "Alexa Avilés",
+    "Luis E. Quero (Conservative)": "Luis E. Quero",
+    "Luis E. Quero (Republican)": "Luis E. Quero",
     "WRITE-IN": "WRITE-IN",
 }
 TRANSLATION_DICT["Mayor"] = {
-    "Eric L. Adams (Independent)": "Eric L. Adams", 
+    "Eric L. Adams (Safe&Affordable/EndAntiSemitism)": "Eric L. Adams", 
     "Curtis A. Sliwa (Republican)": "Curtis A. Sliwa", 
-    "Andrew M. Cuomo (Independent)": "Andrew M. Cuomo", 
+    "Curtis A. Sliwa (Protect Animals)": "Curtis A. Sliwa", 
+    "Andrew M. Cuomo (Fight and Deliver)": "Andrew M. Cuomo", 
     "Irene Estrada (Conservative)": "Irene Estrada",
     "Zohran Kwame Mamdani (Democratic)": "Zohran Kwame Mamdani", 
-    "Joseph Hernandez (Independent)": "Joseph Hernandez", 
-    "Jim Walden (Independent)": "Jim Walden", 
+    "Zohran Kwame Mamdani (Working Families)": "Zohran Kwame Mamdani", 
+    "Joseph Hernandez (Quality of Life)": "Joseph Hernandez", 
+    "Jim Walden (Integrity)": "Jim Walden", 
     "WRITE-IN": "WRITE-IN"
 }
 
@@ -108,12 +112,12 @@ def upload_data(data, args):
                 json.dump(data, f, indent=4)
             return fname
     for election in TRANSLATION_DICT.keys(): 
-        if election in data: 
+        if election in data:
             election_output = data[election]
         else: 
             election_output = generate_blank_data("data/shapes/districts.json", TRANSLATION_DICT[election].values())
             election_output["last_updated"] = str(pd.Timestamp.now())
-        write_output(election_output, election + " (EMPTY DATA)")
+        write_output(election_output, election)
 def main():
     parser = argparse.ArgumentParser(
         prog="boe_scraper",
@@ -148,8 +152,8 @@ def main():
 
     args = parser.parse_args()
     assert (
-        args.poll_interval >= 60
-    ), "We shouldn't pull from the BOE website more than once a minute."
+        args.poll_interval >= 30
+    ), "We shouldn't pull from the BOE website more than once every 30 seconds."
     while True:
         upload_data(fetch_data(args), args)
         time.sleep(args.poll_interval)

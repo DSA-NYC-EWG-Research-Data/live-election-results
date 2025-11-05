@@ -198,10 +198,15 @@ def get_election_results(election_name: str, per_ad_url: str, format="grouped", 
                     + df.ED  # AD * 1000 + ED (To match with geodata)
                 )
             )
-            if candidate_rename_dict is not None and election_name in candidate_rename_dict:
-                subpage_df = subpage_df.rename(columns=candidate_rename_dict[election_name])
             data.append(subpage_df)
     df = pd.concat(data)
+    if candidate_rename_dict is not None and election_name in candidate_rename_dict:
+        df = df.rename(columns=candidate_rename_dict[election_name]).T.groupby(level=0).sum(numeric_only=True).T
+        for c in df.columns:
+            if c != 'Reported %':
+                df[c] = df[c].astype(int)
+        df
+
     if format == "df":
         return df
     elif format == "nested":
